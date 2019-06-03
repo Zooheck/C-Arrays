@@ -81,12 +81,12 @@ char *arr_read(Array *arr, int index)
   // Throw an error if the index is greater or equal to than the current count
   if (index >= arr->count)
   {
-    exit(1);
+    return NULL;
   }
   // Otherwise, return the element at the given index
   else
   {
-    /* code */
+    return arr->elements[index];
   }
 }
 
