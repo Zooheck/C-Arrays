@@ -36,10 +36,13 @@ Array *create_array(int capacity)
  *****/
 void destroy_array(Array *arr)
 {
-
   // Free all elements
-  free(arr->elements);
+  for (int i = 0; i < arr->count; i++)
+  {
+    free(arr->elements[i]);
+  }
   // Free array
+  free(arr->elements);
   free(arr);
 }
 
@@ -114,13 +117,17 @@ void arr_insert(Array *arr, char *element, int index)
  *****/
 void arr_append(Array *arr, char *element)
 {
-
   // Resize the array if the number of elements is over capacity
+  if (arr->count == arr->capacity)
+  {
+    resize_array(arr);
+  }
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -133,11 +140,23 @@ void arr_remove(Array *arr, char *element)
 {
 
   // Search for the first occurence of the element and remove it.
+  int current = 0;
+  while (arr->elements[current] != element)
+  {
+    current++;
+  }
+  char *tempChar = arr->elements[current];
   // Don't forget to free its memory!
-
+  while (current < arr->count)
+  {
+    arr->elements[current] = arr->elements[current + 1];
+    current++;
+  }
+  arr->elements[current] = NULL;
   // Shift over every element after the removed element to the left one position
-
+  free(tempChar);
   // Decrement count by 1
+  arr->count--;
 }
 
 /*****
